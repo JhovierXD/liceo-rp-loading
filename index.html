@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EXPUSADOS RP - Cargando...</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: #0a0a0f;
+            overflow: hidden;
+            font-family: 'Rajdhani', sans-serif;
+            color: white;
+        }
+        
+        /* Fondo con gradiente */
+        .background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at center, #1a1a3a 0%, #0a0a0f 70%);
+            z-index: -2;
+        }
+        
+        /* Partículas */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+        
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            animation: float 8s infinite ease-in-out;
+        }
+        
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(100vh) scale(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-10vh) scale(1);
+                opacity: 0;
+            }
+        }
+        
+        /* Líneas decorativas */
+        .lines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+        
+        .line {
+            position: absolute;
+            background: linear-gradient(to bottom, transparent, rgba(255, 200, 0, 0.1), transparent);
+            width: 1px;
+            height: 100%;
+        }
+        
+        .line-left { left: 50px; }
+        .line-right { right: 50px; }
+        
+        /* Contenedor principal */
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            text-align: center;
+            z-index: 10;
+            position: relative;
+        }
+        
+        /* Logo */
+        .logo-container {
+            margin-bottom: 20px;
+            opacity: 0;
+            animation: fadeIn 1s ease-out 0.5s forwards;
+        }
+        
+        .logo-placeholder {
+            width: 150px;
+            height: 150px;
+            border: 3px solid #ffc800;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 14px;
+            color: #ffc800;
+            box-shadow: 0 0 30px rgba(255, 200, 0, 0.3), inset 0 0 30px rgba(255, 200, 0, 0.1);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        /* Título principal con neón */
+        .title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 48px;
+            font-weight: 900;
+            color: #ffc800;
+            text-transform: uppercase;
+            letter-spacing: 8px;
+            margin-bottom: 10px;
+            opacity: 0;
+            animation: fadeIn 1s ease-out 0.3s forwards, neonGlow 2s ease-in-out infinite alternate;
+            text-shadow: 
+                0 0 10px #ffc800,
+                0 0 20px #ffc800,
+                0 0 40px #ffc800,
+                0 0 80px #ffc800;
+        }
+        
+        @keyframes neonGlow {
+            from {
+                text-shadow: 
+                    0 0 10px #ffc800,
+                    0 0 20px #ffc800,
+                    0 0 40px #ffc800;
+            }
+            to {
+                text-shadow: 
+                    0 0 20px #ffc800,
+                    0 0 40px #ffc800,
+                    0 0 80px #ffc800,
+                    0 0 120px #ffc800;
+            }
+        }
+        
+        /* Subtítulo */
+        .subtitle {
+            font-size: 24px;
+            font-weight: 300;
+            color: #aaa;
+            letter-spacing: 4px;
+            margin-bottom: 40px;
+            opacity: 0;
+            animation: fadeIn 1s ease-out 1s forwards;
+        }
+        
+        /* Panel de información */
+        .info-panel {
+            background: rgba(20, 20, 30, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 20px 40px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            opacity: 0;
+            animation: fadeIn 1s ease-out 1.5s forwards;
+        }
+        
+        .info-text {
+            font-size: 16px;
+            color: #00c8ff;
+            margin: 5px 0;
+            letter-spacing: 2px;
+        }
+        
+        /* Barra de progreso */
+        .progress-container {
+            width: 400px;
+            max-width: 80%;
+            height: 8px;
+            background: rgba(30, 30, 40, 0.8);
+            border-radius: 4px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 20px;
+            opacity: 0;
+            animation: fadeIn 1s ease-out 2s forwards;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #ffc800, #ffaa00);
+            border-radius: 4px;
+            transition: width 0.3s ease;
+            box-shadow: 0 0 10px #ffc800;
+        }
+        
+        /* Estado de descarga */
+        .status {
+            font-size: 14px;
+            color: #666;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+        
+        .status span {
+            color: #00c8ff;
+        }
+        
+        /* Porcentaje */
+        .percentage {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 36px;
+            font-weight: 700;
+            color: #ffc800;
+            margin-bottom: 10px;
+            opacity: 0;
+            animation: fadeIn 1s ease-out 2s forwards;
+        }
+        
+        /* Viñeta */
+        .vignette {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            background: radial-gradient(ellipse at center, transparent 40%, rgba(0, 0, 0, 0.6) 100%);
+            z-index: 5;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Nombre del archivo descargando */
+        .download-info {
+            font-size: 12px;
+            color: #555;
+            margin-top: 10px;
+            max-width: 400px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+    </style>
+</head>
+<body>
+    <div class="background"></div>
+    
+    <!-- Partículas -->
+    <div class="particles" id="particles"></div>
+    
+    <!-- Líneas decorativas -->
+    <div class="lines">
+        <div class="line line-left"></div>
+        <div class="line line-right"></div>
+    </div>
+    
+    <!-- Viñeta -->
+    <div class="vignette"></div>
+    
+    <div class="container">
+        <!-- Logo (placeholder - reemplaza con tu logo) -->
+        <div class="logo-container">
+            <div class="logo-placeholder">
+                TU LOGO<br>AQUÍ
+            </div>
+        </div>
+        
+        <!-- Título -->
+        <h1 class="title">EXPUSADOS RP</h1>
+        
+        <!-- Subtítulo -->
+        <p class="subtitle">¡Diversión garantizada!</p>
+        
+        <!-- Info -->
+        <div class="info-panel">
+            <p class="info-text">Discord: discord.gg/expusados</p>
+            <p class="info-text">Web: www.expusados.com</p>
+        </div>
+        
+        <!-- Porcentaje -->
+        <div class="percentage" id="percentage">0%</div>
+        
+        <!-- Barra de progreso -->
+        <div class="progress-container">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+        
+        <!-- Estado -->
+        <p class="status">Cargando: <span id="statusText">Conectando...</span></p>
+        
+        <!-- Archivo descargando -->
+        <p class="download-info" id="downloadInfo"></p>
+    </div>
+
+    <script>
+        // Crear partículas
+        function createParticles() {
+            const container = document.getElementById('particles');
+            const colors = ['#ffc800', '#00c8ff', '#00ffc8'];
+            
+            for (let i = 0; i < 50; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.width = (Math.random() * 3 + 1) + 'px';
+                particle.style.height = particle.style.width;
+                particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+                particle.style.animationDelay = Math.random() * 8 + 's';
+                particle.style.animationDuration = (Math.random() * 5 + 6) + 's';
+                container.appendChild(particle);
+            }
+        }
+        
+        createParticles();
+        
+        // ============================================
+        // FUNCIONES GLOBALES PARA DARKRP - IMPORTANTE
+        // ============================================
+        
+        // Esta es la función principal que DarkRP usa para actualizar la barra de progreso
+        // Debe estar definida como función global en window
+        window.setProgress = function(progress) {
+            document.getElementById('progressBar').style.width = progress + '%';
+            document.getElementById('percentage').textContent = Math.floor(progress) + '%';
+        };
+        
+        // Función para actualizar el estado/texto
+        window.setStatus = function(status) {
+            document.getElementById('statusText').textContent = status;
+        };
+        
+        // Función alternativa para descripción (algunos servidores la usan)
+        window.setDescription = function(description) {
+            document.getElementById('downloadInfo').textContent = description;
+        };
+        
+        // Función para información de descarga
+        window.setDownloadInfo = function(info) {
+            document.getElementById('downloadInfo').textContent = info;
+        };
+        
+        // Función combinada para compatibilidad
+        window.SetLoadingProgress = function(progress, status, info) {
+            if (progress !== undefined) {
+                window.setProgress(progress);
+            }
+            if (status !== undefined) {
+                window.setStatus(status);
+            }
+            if (info !== undefined) {
+                window.setDownloadInfo(info);
+            }
+        };
+        
+        // ============================================
+        // MODO PREVIEW (solo para probar en navegador)
+        // ============================================
+        (function() {
+            // Solo ejecutar el demo si no estamos en GMod
+            if (typeof gmod !== 'undefined' && typeof gmod !== 'object') {
+                return;
+            }
+            
+            // Verificar si estamos en GMod
+            if (window.gmod !== undefined && window.gmod.loadingHTML !== undefined) {
+                return; // No ejecutar demo en GMod
+            }
+            
+            let demoProgress = 0;
+            const demoStatus = ['Conectando al servidor...', 'Descargando archivos...', 'Preparando contenido...', 'Cargando recursos...', 'Casi listo...'];
+            
+            // Simular carga
+            window.demoInterval = setInterval(function() {
+                if (demoProgress < 100) {
+                    demoProgress += Math.random() * 5;
+                    if (demoProgress > 100) demoProgress = 100;
+                    
+                    const statusIndex = Math.floor(demoProgress / 25);
+                    window.setProgress(demoProgress);
+                    window.setStatus(demoStatus[statusIndex] || 'Completado');
+                } else {
+                    clearInterval(window.demoInterval);
+                }
+            }, 500);
+        })();
+    </script>
+</body>
+</html>
