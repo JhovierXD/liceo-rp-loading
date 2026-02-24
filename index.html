@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EXPUSADOS RP - Cargando...</title>
+    <title>LICEO RP - Cargando...</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&display=swap');
         
@@ -262,50 +262,39 @@
 <body>
     <div class="background"></div>
     
-    <!-- Partículas -->
     <div class="particles" id="particles"></div>
     
-    <!-- Líneas decorativas -->
     <div class="lines">
         <div class="line line-left"></div>
         <div class="line line-right"></div>
     </div>
     
-    <!-- Viñeta -->
     <div class="vignette"></div>
     
     <div class="container">
-        <!-- Logo (placeholder - reemplaza con tu logo) -->
         <div class="logo-container">
             <div class="logo-placeholder">
-                TU LOGO<br>AQUÍ
+                LICEO RP<br>OFICIAL
             </div>
         </div>
         
-        <!-- Título -->
-        <h1 class="title">EXPUSADOS RP</h1>
+        <h1 class="title">LICEO RP</h1>
         
-        <!-- Subtítulo -->
-        <p class="subtitle">¡Diversión garantizada!</p>
+        <p class="subtitle">¡EL ROL COMIENZA AQUÍ!</p>
         
-        <!-- Info -->
         <div class="info-panel">
-            <p class="info-text">Discord: discord.gg/expusados</p>
-            <p class="info-text">Web: www.expusados.com</p>
+            <p class="info-text">Discord: discord.gg/liceorp</p>
+            <p class="info-text">¡Respeta las normas para divertirte!</p>
         </div>
         
-        <!-- Porcentaje -->
         <div class="percentage" id="percentage">0%</div>
         
-        <!-- Barra de progreso -->
         <div class="progress-container">
             <div class="progress-bar" id="progressBar"></div>
         </div>
         
-        <!-- Estado -->
         <p class="status">Cargando: <span id="statusText">Conectando...</span></p>
         
-        <!-- Archivo descargando -->
         <p class="download-info" id="downloadInfo"></p>
     </div>
 
@@ -331,74 +320,61 @@
         createParticles();
         
         // ============================================
-        // FUNCIONES GLOBALES PARA DARKRP - IMPORTANTE
+        // FUNCIONES DE ENLACE PARA GARRY'S MOD
         // ============================================
         
-        // Esta es la función principal que DarkRP usa para actualizar la barra de progreso
-        // Debe estar definida como función global en window
         window.setProgress = function(progress) {
             document.getElementById('progressBar').style.width = progress + '%';
             document.getElementById('percentage').textContent = Math.floor(progress) + '%';
         };
         
-        // Función para actualizar el estado/texto
         window.setStatus = function(status) {
             document.getElementById('statusText').textContent = status;
         };
-        
-        // Función alternativa para descripción (algunos servidores la usan)
-        window.setDescription = function(description) {
-            document.getElementById('downloadInfo').textContent = description;
-        };
-        
-        // Función para información de descarga
-        window.setDownloadInfo = function(info) {
-            document.getElementById('downloadInfo').textContent = info;
-        };
-        
-        // Función combinada para compatibilidad
-        window.SetLoadingProgress = function(progress, status, info) {
-            if (progress !== undefined) {
-                window.setProgress(progress);
-            }
-            if (status !== undefined) {
-                window.setStatus(status);
-            }
-            if (info !== undefined) {
-                window.setDownloadInfo(info);
-            }
-        };
-        
+
+        // Estas funciones las llama el motor de Source automáticamente
+        function GameDetails( servername, serverurl, mapname, maxplayers, steamid, gamemode ) {
+            window.setStatus("Cargando el mapa: " + mapname);
+        }
+
+        function DownloadingFile( filename ) {
+            document.getElementById('downloadInfo').textContent = "Descargando: " + filename;
+        }
+
+        function SetStatusChanged( status ) {
+            window.setStatus(status);
+        }
+
+        var totalFiles = 100;
+        function SetFilesTotal( total ) {
+            totalFiles = total;
+        }
+
+        function SetFilesNeeded( needed ) {
+            var progress = ((totalFiles - needed) / totalFiles) * 100;
+            window.setProgress(progress);
+        }
+
         // ============================================
         // MODO PREVIEW (solo para probar en navegador)
         // ============================================
         (function() {
-            // Solo ejecutar el demo si no estamos en GMod
-            if (typeof gmod !== 'undefined' && typeof gmod !== 'object') {
-                return;
-            }
-            
-            // Verificar si estamos en GMod
-            if (window.gmod !== undefined && window.gmod.loadingHTML !== undefined) {
-                return; // No ejecutar demo en GMod
-            }
+            if (navigator.userAgent.indexOf("GMod") != -1) return;
             
             let demoProgress = 0;
-            const demoStatus = ['Conectando al servidor...', 'Descargando archivos...', 'Preparando contenido...', 'Cargando recursos...', 'Casi listo...'];
+            const demoStatus = ['Conectando al servidor...', 'Descargando archivos...', 'Preparando contenido...', 'Casi listo...'];
             
-            // Simular carga
             window.demoInterval = setInterval(function() {
                 if (demoProgress < 100) {
-                    demoProgress += Math.random() * 5;
+                    demoProgress += Math.random() * 3;
                     if (demoProgress > 100) demoProgress = 100;
-                    
-                    const statusIndex = Math.floor(demoProgress / 25);
+                    const statusIndex = Math.floor(demoProgress / 26);
                     window.setProgress(demoProgress);
-                    window.setStatus(demoStatus[statusIndex] || 'Completado');
+                    window.setStatus(demoStatus[statusIndex] || 'Iniciando juego');
                 } else {
                     clearInterval(window.demoInterval);
                 }
-            }, 500);
+            }, 300);
         })();
     </script>
 </body>
